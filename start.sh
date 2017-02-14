@@ -31,20 +31,15 @@ function main()
         for((idx = 0; idx < $host_count; idx++))
         do
             
-            #for((vm_num = 1; vm_num <= $max_startup_vm; vm_num++ ))        # 실행 중인  vm[1-6]이 있으면 종료함
-            #do
-            #   $SSH ${host_arr[$idx]} xl destroy vm$vm_num 2> /dev/null        
-            #done
-            
-            $SSH ${host_arr[$idx]} /data/bind_ansible/init.sh                   # 초기화 스크립트 실행
-            
-            for((num = 1; num <= $startup_vm; num++))                   # VM 실행
+            $SSH ${host_arr[$idx]} /data/bind_ansible/init.sh             # 초기화 스크립트 실행
+          
+            for((num = 1; num <= $startup_vm; num++))                     # VM 실행
             do
                 $SSH ${host_arr[$idx]} xl create /data/bind_ansible/vm${num}.cfg
                 echo -e "\n\n`date` - host ${host_arr[$idx]}에서 vm${num} 실행 완료" >> $ansible_log
             done
                 
-            go_to_sleep                                                 # sleep 함수 실행 (시스템 부하 때문임)
+            go_to_sleep                                                   # sleep 함수 실행 (시스템 부하 때문임)
             
                 
             # dstat을 실행함
@@ -60,9 +55,7 @@ function main()
                 
             # dstat 프로세스를 중지함
             $SSH ${host_arr[$idx]} $kill_dstat
-            
 
-            # [[ 여기서 해당 vm 종료 스크립트 추가??]]  ---> 테스트 필요
             for((vm_num = 1; vm_num <= $max_startup_vm; vm_num++ ))     # 실행 중인  vm[1-6]이 있으면 종료함
             do
                 $SSH ${host_arr[$idx]} xl destroy vm$vm_num 2> /dev/null        
