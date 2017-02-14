@@ -43,7 +43,8 @@ function main()
             
                 
             # dstat을 실행함
-            $SSH ${host_arr[$idx]} dstat $dstat_options /tmp/dstat.log-${host_arr[$idx]}-iteration$iter.csv &
+            #$SSH ${host_arr[$idx]} dstat $dstat_options /tmp/dstat.log_${host_arr[$idx]}_iteration$iter.csv &
+            $SSH ${host_arr[$idx]} dstat $dstat_options /tmp/dstat.log_${host_arr[$idx]}-iteration$iter_node$host_count_vm$startup_vm_fork$fork.csv &
                 
             # $ansible_log에 $host_count, $startup_vm 등을 기록함 (time의 결과 값인 real은 수동으로 입력해야 함)
             echo "==== `date` <${host_arr[$idx]}-iteration$iter, node=$host_count, vm=$startup_vm, fork=$fork, real=(시간입력)> ====" >> $ansible_log
