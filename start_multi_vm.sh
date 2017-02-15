@@ -50,8 +50,8 @@ function main()
             # 초기화 스크립트 실행
             for((idx = 0; idx < $pm_count; idx++))
             do
-                echo "${pm_arr[$idx]}에서 초기화 스크립트 실행 완료"
                 $SSH ${pm_arr[$idx]} /data/bind_ansible/init.sh
+                echo "${pm_arr[$idx]}에서 초기화 스크립트 실행 완료"
                 echo -e "\n"
             done 
  
