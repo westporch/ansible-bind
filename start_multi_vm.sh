@@ -14,7 +14,7 @@ pm_arr=("192.168.24.1" "192.168.24.3" "192.168.24.6")                   # pm(Phy
 #pm_arr=("192.168.24.3")                                                # pm(Physical Machine) IP 주소
 pm_count=${#pm_arr[@]}                                                  # pm(Physical Machine) 개수
 
-iteration=1                                                             # ansible playbook 실행 횟수
+iteration=5                                                             # ansible playbook 실행 횟수
 startup_vm=3                                                            # pm_arr에 있는 pm에서 실행할 전체 vm 개수
 fork=3                                                                  # ansible playbook에서 fork할 개수 (3 또는 6으로 설정).
 
@@ -93,8 +93,8 @@ function main()
          # xl destroy 명령을 전송한 후 vm이 종료될 때까지 기다림
          sleep 5 
         
-        echo -e "===== `date`: $iter 번째 반복 실행 종료, <pm=$pm_count, vm=$startup_vm, fork=$fork, real=(시간입력)> =====\n"  # 스크립트 실행 콘솔에 출력
-        echo -e "===== `date`: $iter 번째 반복 실행 종료, <pm=$pm_count, vm=$startup_vm, fork=$fork, real=(시간입력)> =====\n" >> $ansible_log
+        echo -e "===== `date`: $iter 번째 반복 실행 종료 =====\n"  # 스크립트 실행 콘솔에 출력
+        echo -e "===== `date`: $iter 번째 반복 실행 종료 =====\n" >> $ansible_log
 
     done
 }
