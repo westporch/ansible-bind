@@ -1,4 +1,5 @@
 #!/bin/bash
+# Hyun-gwan Seo
 
 : ' 
 <start.sh 사용시 변경해야 할 변수 및 파일>
