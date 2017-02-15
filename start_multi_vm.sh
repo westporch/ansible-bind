@@ -26,8 +26,6 @@ kill_dstat="pkill -f dstat"                                             # dstat 
 ansible_home=/root/ansible
 ansible_log=/var/log/ansible.log                                        # ansible 로그 파일 위치
 
-
-
 function go_to_sleep()
 {
     echo "going to sleep..."
@@ -64,18 +62,6 @@ function main()
                     #echo -e "\n\n`date` - host ${pm_arr[$arr_idx]}에서 vm${vm_idx} 실행 완료" >> $ansible_log
                 done
             
-
-            #for((idx = 0; idx < $pm_count; idx++))
-            #do       
-            #    # vm 실행
-            #    for((num = 1; num <= $startup_vm; num++))                     
-            #    do
-            #        $SSH ${pm_arr[$idx]} xl create /data/bind_ansible/vm${num}.cfg
-            #        echo -e "\n\n`date` - host ${pm_arr[$idx]}에서 vm${num} 실행 완료" >> $ansible_log
-            #    done
-            # 
-            #done    
-            
             # sleep 함수 실행 (시스템 부하 때문임)          
             go_to_sleep                                              
 
@@ -98,14 +84,12 @@ function main()
                 do
                     $SSH ${pm_arr[$idx]} xl destroy vm$vm_num 2> /dev/null        
                 done
-                
-                # xl destroy 명령을 전송한 후 vm이 종료될 때까지 기다림
-                sleep 5 
-                                
             done
-            
+
+         # xl destroy 명령을 전송한 후 vm이 종료될 때까지 기다림
+         sleep 5 
+
     done
-    
 }
 
 main
