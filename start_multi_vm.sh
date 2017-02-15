@@ -14,7 +14,7 @@ pm_arr=("192.168.24.1" "192.168.24.3" "192.168.24.6")                   # pm(Phy
 pm_count=${#pm_arr[@]}                                                  # pm(Physical Machine) 개수
 
 iteration=1                                                             # ansible playbook 실행 횟수
-startup_vm=1                                                            # host에서 실행할 vm 개수
+startup_vm=3                                                            # pm_arr에 있는 pm에서 실행할 전체 vm 개수
 fork=3                                                                  # ansible playbook에서 fork할 개수 (3 또는 6으로 설정).
 
 SSH="ssh -p31227"
