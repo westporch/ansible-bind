@@ -1,7 +1,7 @@
 #!/bin/bash
 
-' :
-<변경해야 할 변수>
+: ' 
+<start.sh 사용시 변경해야 할 변수>
 host_arr
 iteration
 startup_vm
