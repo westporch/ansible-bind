@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #host_arr=("192.168.24.1" "192.168.24.3" "192.168.24.6")                # host(node) 들의 IP 주소
-host_arr=("192.168.24.1")                                               # host(node) IP 주소
+host_arr=("192.168.24.3")                                               # host(node) IP 주소
 host_count=${#host_arr[@]}                                              # host(node) 개수
 
 SSH="ssh -p31227"
@@ -43,8 +43,7 @@ function main()
             
                 
             # dstat을 실행함
-            #$SSH ${host_arr[$idx]} dstat $dstat_options /tmp/dstat.log_${host_arr[$idx]}_iteration$iter.csv &
-            $SSH ${host_arr[$idx]} dstat $dstat_options /tmp/dstat.log_${host_arr[$idx]}-iteration$iter_node$host_count_vm$startup_vm_fork$fork.csv &
+            $SSH ${host_arr[$idx]} dstat $dstat_options /tmp/dstat.log_${host_arr[$idx]}_iteration$iter.csv &
                 
             # $ansible_log에 $host_count, $startup_vm 등을 기록함 (time의 결과 값인 real은 수동으로 입력해야 함)
             echo "==== `date` <${host_arr[$idx]}-iteration$iter, node=$host_count, vm=$startup_vm, fork=$fork, real=(시간입력)> ====" >> $ansible_log
