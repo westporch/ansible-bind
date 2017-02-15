@@ -46,8 +46,8 @@ function main()
 {
     for ((iter = 0; iter < $iteration; iter++))
         do
-            echo -e "===== `date`: $iter 번째 반복 실행 시작 <pm=$pm_count, vm=$startup_vm, fork=$fork, real=(시간입력)> =====\n"  # 스크립트 실행 콘솔에 출력
-            echo -e "===== `date`: $iter 번째 반복 실행 시작 <pm=$pm_count, vm=$startup_vm, fork=$fork, real=(시간입력)> =====\n" >> $ansible_log
+            echo -e "===== `date`: $iter 번째 반복 실행 시작, <pm=$pm_count, vm=$startup_vm, fork=$fork, real=(시간입력)> =====\n"  # 스크립트 실행 콘솔에 출력
+            echo -e "===== `date`: $iter 번째 반복 실행 시작, <pm=$pm_count, vm=$startup_vm, fork=$fork, real=(시간입력)> =====\n" >> $ansible_log
 
             # 초기화 스크립트 실행
             for((idx = 0; idx < $pm_count; idx++))
@@ -93,8 +93,8 @@ function main()
          # xl destroy 명령을 전송한 후 vm이 종료될 때까지 기다림
          sleep 5 
         
-        echo -e "===== `date`: $iter 번째 반복 실행 종료 <pm=$pm_count, vm=$startup_vm, fork=$fork, real=(시간입력)> =====\n"  # 스크립트 실행 콘솔에 출력
-        echo -e "===== `date`: $iter 번째 반복 실행 종료 <pm=$pm_count, vm=$startup_vm, fork=$fork, real=(시간입력)> =====\n" >> $ansible_log
+        echo -e "===== `date`: $iter 번째 반복 실행 종료, <pm=$pm_count, vm=$startup_vm, fork=$fork, real=(시간입력)> =====\n"  # 스크립트 실행 콘솔에 출력
+        echo -e "===== `date`: $iter 번째 반복 실행 종료, <pm=$pm_count, vm=$startup_vm, fork=$fork, real=(시간입력)> =====\n" >> $ansible_log
 
     done
 }
