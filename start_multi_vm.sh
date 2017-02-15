@@ -47,7 +47,7 @@ function main()
     for ((iter = 0; iter < $iteration; iter++))
         do
             echo -e "===== `date` : iteration$iter start, [pm=$pm_count, vm=$startup_vm, fork=$fork, real=(시간입력)] =====\n"  # 스크립트 실행 콘솔에 출력
-            echo -e "===== `date` : iteration$iter start, [pm=$pm_count, vm=$startup_vm, fork=$fork, real=(시간입력)] =====\n" $ansible_log
+            echo -e "===== `date` : iteration$iter start, [pm=$pm_count, vm=$startup_vm, fork=$fork, real=(시간입력)] =====\n" >> $ansible_log
 
             # 초기화 스크립트 실행
             for((idx = 0; idx < $pm_count; idx++))
