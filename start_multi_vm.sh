@@ -50,14 +50,16 @@ function main()
             # 초기화 스크립트 실행
             for((idx = 0; idx < $pm_count; idx++))
             do
-                $SSH ${pm_arr[$idx]} /data/bind_ansible/init.sh             
+                echo "${pm_arr[$idx]}에서 초기화 스크립트 실행 완료"
+                $SSH ${pm_arr[$idx]} /data/bind_ansible/init.sh
+                echo -e "\n"
             done 
  
                 # vm 실행
                 for((num = 1; num <= $startup_vm; num++))                     
                 do
-                    vm_idx=num      # vm의 인덱스는 1부터 시작함
-                    arr_idx=num-1   # 배열에 선언된 인덱스는 0부터 시작함
+                    vm_idx=$num      # vm의 인덱스는 1부터 시작함
+                    arr_idx=$num-1   # 배열에 선언된 인덱스는 0부터 시작함
                     $SSH ${pm_arr[$arr_idx]} xl create /data/bind_ansible/vm${vm_idx}.cfg
                     #echo -e "\n\n`date` - host ${pm_arr[$arr_idx]}에서 vm${vm_idx} 실행 완료" >> $ansible_log
                 done
