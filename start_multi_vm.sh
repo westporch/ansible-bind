@@ -46,7 +46,7 @@ function main()
     for ((iter = 0; iter < $iteration; iter++))
         do
             echo -e "===== `date` $iter 번째 반복 실행 시작 <node=$host_count, vm=$startup_vm, fork=$fork, real=(시간입력)> =====\n"  # 스크립트 실행 콘솔에 출력
-            echo -e "===== `date` $iter 번째 반복 실행 시작 <node=$host_count, vm=$startup_vm, fork=$fork, real=(시간입력)> =====\n" > $ansible_log
+            echo -e "===== `date` $iter 번째 반복 실행 시작 <node=$host_count, vm=$startup_vm, fork=$fork, real=(시간입력)> =====\n" >> $ansible_log
 
             # 초기화 스크립트 실행
             for((idx = 0; idx < $pm_count; idx++))
@@ -93,7 +93,7 @@ function main()
          sleep 5 
         
         echo -e "===== `date` $iter 번째 반복 실행 종료 <node=$host_count, vm=$startup_vm, fork=$fork, real=(시간입력)> =====\n"  # 스크립트 실행 콘솔에 출력
-        echo -e "===== `date` $iter 번째 반복 실행 종료 <node=$host_count, vm=$startup_vm, fork=$fork, real=(시간입력)> =====\n" > $ansible_log
+        echo -e "===== `date` $iter 번째 반복 실행 종료 <node=$host_count, vm=$startup_vm, fork=$fork, real=(시간입력)> =====\n" >> $ansible_log
 
     done
 }
