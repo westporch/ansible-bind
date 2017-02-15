@@ -1,5 +1,13 @@
 #!/bin/bash
 
+' :
+<변경해야 할 변수>
+host_arr
+iteration
+startup_vm
+fork
+'
+
 #host_arr=("192.168.24.1" "192.168.24.3" "192.168.24.6")                # host(node) 들의 IP 주소
 host_arr=("192.168.24.3")                                               # host(node) IP 주소
 host_count=${#host_arr[@]}                                              # host(node) 개수
@@ -10,7 +18,7 @@ startup_vm=1                                                            # host�
 max_startup_vm=6                                                        # host에서 최대로 실행할 수 있는 vm 개수
 
 dstat_options="-cdngy --time --output"                                  # dstat 명령에서 사용할 옵션
-kill_dstat="pkill dstat"                                                # dstat 프로세스를 죽임
+kill_dstat="pkill -f dstat"                                                # dstat 프로세스를 죽임
 ansible_home=/root/ansible
 ansible_log=/var/log/ansible.log                                        # ansible 로그 파일 위치
 
