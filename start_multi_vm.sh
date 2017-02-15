@@ -15,7 +15,7 @@ pm_arr=("192.168.24.1" "192.168.24.3" "192.168.24.6")                   # pm(Phy
 pm_count=${#pm_arr[@]}                                                  # pm(Physical Machine) 개수
 
 iteration=5                                                             # ansible playbook 실행 횟수
-startup_vm=3                                                            # pm_arr에 있는 pm에서 실행할 전체 vm 개수
+startup_vm=6                                                            # pm_arr에 있는 pm에서 실행할 전체 vm 개수
 fork=3                                                                  # ansible playbook에서 fork할 개수 (3 또는 6으로 설정).
 
 SSH="ssh -p31227"
@@ -46,8 +46,8 @@ function main()
 {
     for ((iter = 0; iter < $iteration; iter++))
         do
-            echo -e "===== `date` : iteration$iter start, [pm=$pm_count, vm=$startup_vm, fork=$fork, real=(시간입력)] =====\n"  # 스크립트 실행 콘솔에 출력
-            echo -e "===== `date` : iteration$iter start, [pm=$pm_count, vm=$startup_vm, fork=$fork, real=(시간입력)] =====\n" >> $ansible_log
+            echo -e "===== `date` : Iteration$iter start, [pm=$pm_count, vm=$startup_vm, fork=$fork, real=(시간입력)] =====\n"  # 스크립트 실행 콘솔에 출력
+            echo -e "===== `date` : Iteration$iter start, [pm=$pm_count, vm=$startup_vm, fork=$fork, real=(시간입력)] =====\n" >> $ansible_log
 
             # 초기화 스크립트 실행
             for((idx = 0; idx < $pm_count; idx++))
@@ -57,19 +57,25 @@ function main()
                 echo -e "\n"
             done 
  
-                # vm 실행
-                for((num = 1; num <= $startup_vm; num++))                     
-                do
-                    vm_idx=$num      # vm의 인덱스는 1부터 시작함
-                    arr_idx=$num-1   # 배열에 선언된 인덱스는 0부터 시작함
-                    $SSH ${pm_arr[$arr_idx]} xl create /data/bind_ansible/vm${vm_idx}.cfg
-                    #echo -e "\n\n`date` - host ${pm_arr[$arr_idx]}에서 vm${vm_idx} 실행 완료" >> $ansible_log
-                done
+            # vm을 실행하는 for문
+            for((num = 1; num <= $startup_vm; num++))                     
+            do
+                vm_idx=$num                                 # vm의 인덱스는 1부터 시작함 (vm의 이름은 vm1~6으로 부여됨)
+                arr_idx=`expr $num - 1`                     # 배열에 선언된 인덱스는 0부터 시작함
+
+                # 예외처리. 실행하고자 하는 vm 대수가 $pm_count(pm 대수)보다 클 경우 mod 연산을 해서 vm을 분산시킴
+                if [ $arr_idx -qe $pm_count ]; then
+                    arr_idx=`expr $arr_idx % $pm_count`
+                fi
+
+                # vm을 실행하는 명령
+                $SSH ${pm_arr[$arr_idx]} xl create /data/bind_ansible/vm${vm_idx}.cfg
+            done
             
             # sleep 함수 실행 (시스템 부하 때문임)          
             go_to_sleep                                              
 
-            # dstat을 실행함
+            # pm에서 dstat을 실행함
             for((idx = 0; idx < $pm_count; idx++))
             do       
                 $SSH ${pm_arr[$idx]} dstat $dstat_options /tmp/dstat.log_${pm_arr[$idx]}_iteration$iter.csv &   
@@ -93,8 +99,8 @@ function main()
          # xl destroy 명령을 전송한 후 vm이 종료될 때까지 기다림
          sleep 5 
 
-        echo -e "===== `date` : iteration$iter end =====\n"                  # 스크립트 실행 콘솔에 출력
-        echo -e "===== `date` : iteration$iter end =====\n" >> $ansible_log
+        echo -e "===== `date` : Iteration$iter end =====\n"                  # 스크립트 실행 콘솔에 출력
+        echo -e "===== `date` : Iteration$iter end =====\n" >> $ansible_log
 
     done
 }
