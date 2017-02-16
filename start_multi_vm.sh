@@ -137,7 +137,7 @@ function main()
             '
             for((idx = 0; idx < $startup_vm; idx++))
             do
-               ssh $vm_arr[$idx] $scp_vm /home/dstat.log* $ansible_master_server:/home/vm_dstat_log/fork$fork/startup_vm$startup_vm
+               ssh ${vm_arr[$idx]} $scp_vm /home/dstat.log* $ansible_master_server:/home/vm_dstat_log/fork$fork/startup_vm$startup_vm
             done
 
 
