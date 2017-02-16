@@ -95,7 +95,7 @@ function main()
                 arr_idx=`expr $num - 1`                     # 배열에 선언된 인덱스는 0부터 시작함
 
                 # 예외처리. 실행하고자 하는 vm 대수가 $pm_count(pm 대수)보다 클 경우 mod 연산을 해서 vm을 분산시킴
-                if [ $arr_idx -qe $pm_count ]; then
+                if [ $arr_idx -ge $pm_count ]; then
                     arr_idx=`expr $arr_idx % $pm_count`
                 fi
 
