@@ -90,7 +90,7 @@ function main()
             # vm을 실행하는 for문
             for((num = 1; num <= $startup_vm; num++))                     
             do
-                vm_idx=$num                                 # vm의 인덱스는 1부터 시작함 (vm의 이름은 vm1~6으로 부여됨)
+                vm_idx=$num                                 # vm의 인덱스는 1부터 시작함 (vm의 이름(xl list로 보여지는 가상머신 이름)은 vm1~6으로 지정함)
                 arr_idx=`expr $num - 1`                     # 배열에 선언된 인덱스는 0부터 시작함
 
                 # 예외처리. 실행하고자 하는 vm 대수가 $pm_count(pm 대수)보다 클 경우 mod 연산을 해서 vm을 분산시킴
@@ -98,7 +98,7 @@ function main()
                     arr_idx=`expr $arr_idx % $pm_count`
                 fi
 
-                # vm을 실행하는 명령
+                # pm에서 vm을 실행하는 명령
                 $ssh_pm ${pm_arr[$arr_idx]} xl create /data/bind_ansible/vm${vm_idx}.cfg
             done
             
@@ -106,7 +106,7 @@ function main()
             go_to_sleep                                              
 
             : '
-            # pm에서 dstat을 실행함
+            # pm에서 dstat을 실행함 --> dstat은 pm이 아닌 vm에서 실행해야 함
             for((idx = 0; idx < $pm_count; idx++))
             do       
                 $ssh_pm ${pm_arr[$idx]} dstat $dstat_options /tmp/dstat.log_${pm_arr[$idx]}_iteration$iter.csv &   
@@ -125,7 +125,7 @@ function main()
             for((idx = 0; idx < $pm_count; idx++))
             do  
                 : '
-                # dstat 프로세스를 중지함
+                # pm에서 dstat 프로세스를 중지함 --> dstat 프로세스는 pm이 아닌 vm에서 종료해야 함
                 $ssh_pm ${pm_arr[$idx]} $kill_dstat
                 '
 
