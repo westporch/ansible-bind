@@ -103,7 +103,7 @@ function main()
                 $ssh_pm ${pm_arr[$arr_idx]} xl create /data/bind_ansible/vm${vm_idx}.cfg
             done
             
-            # sleep 함수 실행 (시스템 부하 때문임)          
+            # sleep 함수 실행 (vm 부팅 완료 대기, 시스템 부하의 완화)       
             go_to_sleep                                              
 
             : '
