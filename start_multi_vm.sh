@@ -51,13 +51,13 @@ max_startup_vm=6                                                        # host�
 ssh_pm="ssh -p31227"                                                    # pm에서는 ssh tcp/31227 포트를 사용함
 ssh_vm="ssh"                                                            # ssh 기본 포트인 tcp/22를 사용함
 
-dstat_options="-cdngy --time --output"                                  # dstat 명령에서 사용할 옵션
+dstat_options="-tcdngy --output"                                  # dstat 명령에서 사용할 옵션
 kill_dstat="pkill -f dstat"                                             # dstat 프로세스를 죽임
 
 ansible_home=/root/ansible
 ansible_log=/var/log/ansible.log                                        # ansible 로그 파일 위치
 ansible_master_server=192.168.24.201
-scp_vm="scp -P31227"
+scp_vm="scp -P22"
 
 
 function go_to_sleep()
