@@ -22,12 +22,12 @@
 192.168.24.6  uxen-pm06
 '
 
-pm_arr=("192.168.24.1" "192.168.24.3" "192.168.24.6")                   # pm(Physical Machine) 들의 IP 주소
-#pm_arr=("192.168.24.3")                                                # pm(Physical Machine) IP 주소
+#pm_arr=("192.168.24.1" "192.168.24.3" "192.168.24.6")                   # pm(Physical Machine) 들의 IP 주소
+pm_arr=("192.168.24.3")                                                # pm(Physical Machine) IP 주소
 pm_count=${#pm_arr[@]}                                                  # pm(Physical Machine) 개수
 
 iteration=5                                                             # ansible playbook 실행 횟수
-startup_vm=6                                                            # pm_arr에 있는 pm에서 실행할 전체 vm 개수
+#startup_vm=6                                                            # pm_arr에 있는 pm에서 실행할 전체 vm 개수
 fork=3                                                                  # ansible playbook에서 fork할 개수 (3 또는 6으로 설정).
 
 : ' vm들의 IP 주소 (배열 vm_arr 참고)
@@ -42,9 +42,10 @@ fork=3                                                                  # ansibl
 192.168.24.216     vm6      centos
 '
 
-vm_arr=("192.168.24.211" "192.168.24.212" "192.168.24.213" "192.168.24.214" "192.168.24.215" "192.168.24.216")
-#vm_arr=("192.168.24.211")
+#vm_arr=("192.168.24.211" "192.168.24.212" "192.168.24.213" "192.168.24.214" "192.168.24.215" "192.168.24.216")
+vm_arr=("192.168.24.211")
 vm_count=${#vm_arr[@]}                                                  # vm 개수
+startup_vm=$vm_count
 max_startup_vm=6                                                        # host에서 최대로 실행할 수 있는 vm 개수 (vm1~6)
 
 #SSH="ssh -p31227"
@@ -56,6 +57,9 @@ kill_dstat="pkill -f dstat"                                             # dstat 
 
 ansible_home=/root/ansible
 ansible_log=/var/log/ansible.log                                        # ansible 로그 파일 위치
+ansible_master_server=192.168.24.201
+scp_vm="scp -P31227"
+
 
 function go_to_sleep()
 {
@@ -115,14 +119,27 @@ function main()
             '
 
             # vm_arr에 정의된 vm에서 dstat을 실행함
-            for((idx = 0; idx < $vm_count; idx++))
+            for((idx = 0; idx < $startup_vm; idx++))
             do
-                $ssh_vm ${vm_arr[$idx]} dstat $dstat_options /home/dstat.log_${vm_arr[$idx]}_iteration$iter.csv &               
+                $ssh_vm ${vm_arr[$idx]} dstat $dstat_options /home/dstat.log_${vm_arr[$idx]}_iteration$iter.csv > /dev/null & 
             done
 
             # ansible playbook을 실행함. playbook은 master vm에서 실행함
             play_ansible_playbook
-            
+ 
+
+            : '
+            vm에 저장된 dstat 로그를 ansible_master_server로 옮김. (TODO: 디렉토리가 없을 경우 생성하는 코드를 추가해야 함)
+
+            1. ansible master server ---- (ssh 접속) ----> vm
+            2. ansible master server <--- (vm의 dstat 로그 파일 전송) ---- vm
+            '
+            for((idx = 0; idx < $startup_vm; idx++))
+            do
+               ssh $vm_arr[$idx] $scp_vm /home/dstat.log* $ansible_master_server:/home/vm_dstat_log/fork$fork/startup_vm$startup_vm
+            done
+
+
             for((idx = 0; idx < $pm_count; idx++))
             do  
                 : '
@@ -130,7 +147,7 @@ function main()
                 $ssh_pm ${pm_arr[$idx]} $kill_dstat
                 '
 
-                # vm_arr에 정의된 vm에서 vm을 종료함
+                # vm_arr에 정의된 vm에서 dstat을 종료함
                 $ssh_vm ${vm_arr[$idx]} $kill_dstat
 
                 # pm에서 실행 중인 vm[1-6]이 있으면 종료함
