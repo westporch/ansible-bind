@@ -120,7 +120,9 @@ function main()
             # vm_arr에 정의된 vm에서 dstat을 실행함
             for((idx = 0; idx < $startup_vm; idx++))
             do
+                echo "`date`: vm ${vm_arr[$idx]}의 dstat 로그 수집중.. - iteration$iter"
                 $ssh_vm ${vm_arr[$idx]} dstat $dstat_options /home/dstat.log_${vm_arr[$idx]}_iteration$iter.csv > /dev/null & 
+                echo "`date`: vm ${vm_arr[$idx]}의 dstat 로그 수집 완료"
             done
 
             # ansible playbook을 실행함. playbook은 master vm에서 실행함
