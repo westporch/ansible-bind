@@ -117,7 +117,7 @@ function main()
             # vm_arr에 정의된 vm에서 dstat을 실행함
             for((idx = 0; idx < $vm_count; idx++))
             do
-                $ssh_vm ${vm_arr[$idx]} dstat $dstat_options /tmp/dstat.log_${vm_arr[$idx]}_iteration$iter.csv &               
+                $ssh_vm ${vm_arr[$idx]} dstat $dstat_options /root/dstat.log_${vm_arr[$idx]}_iteration$iter.csv &               
             done
 
             # ansible playbook을 실행함. playbook은 master vm에서 실행함
