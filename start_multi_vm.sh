@@ -13,7 +13,7 @@
 [배열] vm_arr: vm(Virtual Machine)들의 ip 주소 목록
 '
 
-: ' pm들의 IP 주소
+: ' pm들의 IP 주소 (배열 pm_arr 참고)
 
  IP(private)   hostname
 ------------------------
@@ -30,7 +30,7 @@ iteration=5                                                             # ansibl
 startup_vm=6                                                            # pm_arr에 있는 pm에서 실행할 전체 vm 개수
 fork=3                                                                  # ansible playbook에서 fork할 개수 (3 또는 6으로 설정).
 
-: ' vm들의 IP 주소
+: ' vm들의 IP 주소 (배열 vm_arr 참고)
 
   IP(private)   hostname      os
 -----------------------------------
